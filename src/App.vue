@@ -23,16 +23,16 @@
       </div>
 
       <div v-if="currentTab == 'crimes'">
-        <apexchart type=pie width=400 :options="chartOptionsCrimes" :series="seriesCrimes" />
+        <apexchart type=pie width="60%" :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
-        <apexchart type=pie width=400 :options="chartOptionsTeams" :series="seriesTeams" />
+        <apexchart type=pie width="60%" :options="chartOptionsTeams" :series="seriesTeams" />
       </div>
       <div v-if="currentTab == 'players'">
-        <apexchart type=pie width=400 :options="chartOptionsPlayers" :series="seriesPositions" />
+        <apexchart type=pie width="60%" :options="chartOptionsPlayers" :series="seriesPositions" />
       </div>
       <div v-if="currentTab == 'positions'">
-        <apexchart type=pie width=400 :options="chartOptionsPositions" :series="seriesPositions" />
+        <apexchart type=pie width="60%" :options="chartOptionsPositions" :series="seriesPositions" />
       </div>
     </div>
   </div>
@@ -70,9 +70,6 @@ export default {
           responsive: [{
             breakpoint: 480,
             options: {
-              chart: {
-                width: 400
-              },
               legend: {
                 position: 'bottom'
               }
@@ -99,9 +96,6 @@ export default {
           responsive: [{
             breakpoint: 480,
             options: {
-              chart: {
-                width: 400
-              },
               legend: {
                 position: 'bottom'
               }
@@ -128,9 +122,6 @@ export default {
           responsive: [{
             breakpoint: 480,
             options: {
-              chart: {
-                width: 400
-              },
               legend: {
                 position: 'bottom'
               }
@@ -157,9 +148,6 @@ export default {
           responsive: [{
             breakpoint: 480,
             options: {
-              chart: {
-                width: 400
-              },
               legend: {
                 position: 'bottom'
               }
