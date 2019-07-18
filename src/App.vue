@@ -8,21 +8,31 @@
       <div class="container py-2">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
-            <a class="nav-link rounded active" href="#">Crimes</a>
+            <a class="nav-link rounded active" @click="changeTab('crimes')"  href="#">Crimes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" href="#">Teams</a>
+            <a class="nav-link rounded" @click="changeTab('teams')" href="#">Teams</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" href="#">Players</a>
+            <a class="nav-link rounded" @click="changeTab('players')" href="#">Players</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" href="#">Positions</a>
+            <a class="nav-link rounded" @click="changeTab('positions')" href="#">Positions</a>
           </li>
         </ul>
       </div>
-      <div id="chart">
-        <apexchart type=pie width=400 :options="chartOptions" :series="series" />
+
+      <div v-if="currentTab == 'crimes'">
+        <apexchart type=pie width=400 :options="chartOptionsCrimes" :series="seriesCrimes" />
+      </div>
+      <div v-if="currentTab == 'teams'">
+        <apexchart type=pie width=400 :options="chartOptionsTeams" :series="seriesTeams" />
+      </div>
+      <div v-if="currentTab == 'players'">
+        <apexchart type=pie width=400 :options="chartOptionsPlayers" :series="seriesPositions" />
+      </div>
+      <div v-if="currentTab == 'positions'">
+        <apexchart type=pie width=400 :options="chartOptionsPositions" :series="seriesPositions" />
       </div>
     </div>
   </div>
@@ -39,43 +49,23 @@ Vue.use(VueAxios, axios)
 
 export default {
   name: 'app',
-  async created(){
-    let labels = []
-    let series = []
-    let response_crime = await this.$http.get("http://nflarrest.com/api/v1/crime")
-    this.crimes = response_crime.data
-    this.crimes.forEach(element => {
-      labels.push(element.Category)
-      series.push(element.arrest_count)
-    });
-    let teams = []
-    let response_team = await this.$http.get("http://nflarrest.com/api/v1/team")
-    this.teams = response_team.data
-    this.teams.forEach(element => {
-      teams.push(element)
-    });
-    let players = []
-    let response_player = await this.$http.get("http://nflarrest.com/api/v1/player")
-    this.players = response_player.data
-    this.players.forEach(element => {
-      players.push(element)
-    });
-    let positions = []
-    let response_position = await this.$http.get("http://nflarrest.com/api/v1/position")
-    this.positions = response_position.data
-    this.positions.forEach(element => {
-      positions.push(element)
-    });
-  },
-  components: {
-    apexchart: VueApexCharts,
-  },
-  data(){
-    return{
-      crimes: [],
-      series: [44, 55, 7, 43, 22, 33, 15],
-        chartOptions: {
-          labels: ['A','B','C','D','E','F','G'],
+  methods: {
+    changeTab(name){
+      this.currentTab = name
+    },
+    async calculateCrimes(){
+      let internalLabelsCrimes = []
+      let internalSeriesCrimes = []
+      let responseCrime = await this.$http.get("http://nflarrest.com/api/v1/crime")
+      this.crimes = responseCrime.data
+      console.log(this.crimes)
+      this.crimes.forEach(element => {
+        internalLabelsCrimes.push(element.Category)
+        internalSeriesCrimes.push(parseInt(element.arrest_count))
+      });
+
+      let internalChartOptionsCrimes = {
+          labels: internalLabelsCrimes,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
           responsive: [{
             breakpoint: 480,
@@ -89,6 +79,117 @@ export default {
             }
           }]
         }
+        this.chartOptionsCrimes= internalChartOptionsCrimes
+        this.seriesCrimes=internalSeriesCrimes
+    },
+    async calculateTeams(){
+      let internalLabelsTeams = []
+      let internalSeriesTeams = []
+      let responseTeam = await this.$http.get("http://nflarrest.com/api/v1/team")
+      this.teams = responseTeam.data
+      console.log(this.teams)
+      this.teams.forEach(element => {
+        internalLabelsTeams.push(element.Team)
+        internalSeriesTeams.push(parseInt(element.arrest_count))
+      });
+
+      let internalChartOptionsTeams = {
+          labels: internalLabelsTeams,
+          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        }
+        this.chartOptionsTeams= internalChartOptionsTeams
+        this.seriesTeams=internalSeriesTeams
+    },
+    async calculatePlayers(){
+      let internalLabelsPlayers = []
+      let internalSeriesPlayers = []
+      let responsePlayer = await this.$http.get("http://nflarrest.com/api/v1/player")
+      this.players = responsePlayer.data
+      console.log(this.players)
+      this.players.forEach(element => {
+        internalLabelsPlayers.push(element.Name)
+        internalSeriesPlayers.push(parseInt(element.arrest_count))
+      });
+
+      let internalChartOptionsPlayers = {
+          labels: internalLabelsPlayers,
+          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        }
+        this.chartOptionsPlayers= internalChartOptionsPlayers
+        this.seriesPlayers=internalSeriesPlayers
+    },
+    async calculatePositions(){
+      let internalLabelsPositions = []
+      let internalSeriesPositions = []
+      let responsePosition = await this.$http.get("http://nflarrest.com/api/v1/position")
+      this.positions = responsePosition.data
+      console.log(this.positions)
+      this.positions.forEach(element => {
+        internalLabelsPositions.push(element.Position)
+        internalSeriesPositions.push(parseInt(element.arrest_count))
+      });
+
+      let internalChartOptionsPositions = {
+          labels: internalLabelsPositions,
+          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
+        }
+        this.chartOptionsPositions= internalChartOptionsPositions
+        this.seriesPositions=internalSeriesPositions
+    }
+  },
+  async created(){
+    await this.calculateCrimes()
+    await this.calculateTeams()
+    await this.calculatePlayers()
+    await this.calculatePositions()
+  },
+  components: {
+    apexchart: VueApexCharts,
+  },
+  data(){
+    return{
+      currentTab: "crimes",
+      chartOptionsCrimes: {},
+      seriesCrimes: [],
+      chartOptionsTeams: {},
+      seriesTeams: [],
+      chartOptionsPlayers: {},
+      seriesPlayers: [],
+      chartOptionsPositions: {},
+      seriesPositions: []
     }
   }
 
