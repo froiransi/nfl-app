@@ -21,17 +21,14 @@
           </li>
         </ul>
       </div>
-      <div class="container chart">
-        <ul>
-          <li v-for="(crime,index) in crimes" :key="index">{{crime}}</li>
-        </ul>
+      <div id="chart">
+        <apexchart type=pie width=400 :options="chartOptions" :series="series" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -42,34 +39,60 @@ Vue.use(VueAxios, axios)
 
 export default {
   name: 'app',
-  //components: {
-   // HelloWorld
-  //},
   async created(){
-
-    let response = await this.$http.get("http://nflarrest.com/api/v1/crime").then((response) => {
-
-      for (let i=0; i<response.lenght;i++){
-        this.crimes.push(response[`Category${i}`])
-      }
-      
+    let labels = []
+    let series = []
+    let response_crime = await this.$http.get("http://nflarrest.com/api/v1/crime").then((response_crime) => {
+      this.crimes = response_crime.data
+      this.crimes.forEach(element => {
+        labels.push(element.Category)
+        series.push(element.arrest_count)
+      });
     })
+    let teams = []
+    let response_team = await this.$http.get("http://nflarrest.com/api/v1/team").then((response_team) => {
+      this.teams = response_team.data
+      this.teams.forEach(element => {
+        teams.push(element)
+      });
+    })
+    let players = []
+    let response_player = await this.$http.get("http://nflarrest.com/api/v1/player").then((response_player) => {
+      this.players = response_player.data
+      this.players.forEach(element => {
+        players.push(element)
+      });
+    })
+    let positions = []
+    let response_position = await this.$http.get("http://nflarrest.com/api/v1/position").then((response_position) => {
+      this.positions = response_position.data
+      this.positions.forEach(element => {
+        positions.push(element)
+      });
+    })
+  },
+  components: {
+    apexchart: VueApexCharts,
   },
   data(){
     return{
       crimes: [],
-      options: {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+      series: [44, 55, 7, 43, 22, 33, 15],
+        chartOptions: {
+          labels: ['A','B','C','D','E','F','G'],
+          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 400
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }]
         }
-      },
-      series: [{
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }]
     }
   }
 
@@ -129,11 +152,6 @@ font-family: 'Sunflower', sans-serif;
   background-color: #B5000C !important;
   color: white!important;
 }
-
-.chart{
-  background-color: #F2F2F2;
-}
-
 
 @media (max-width: 454px) {
 
