@@ -42,34 +42,30 @@ export default {
   async created(){
     let labels = []
     let series = []
-    let response_crime = await this.$http.get("http://nflarrest.com/api/v1/crime").then((response_crime) => {
-      this.crimes = response_crime.data
-      this.crimes.forEach(element => {
-        labels.push(element.Category)
-        series.push(element.arrest_count)
-      });
-    })
+    let response_crime = await this.$http.get("http://nflarrest.com/api/v1/crime")
+    this.crimes = response_crime.data
+    this.crimes.forEach(element => {
+      labels.push(element.Category)
+      series.push(element.arrest_count)
+    });
     let teams = []
-    let response_team = await this.$http.get("http://nflarrest.com/api/v1/team").then((response_team) => {
-      this.teams = response_team.data
-      this.teams.forEach(element => {
-        teams.push(element)
-      });
-    })
+    let response_team = await this.$http.get("http://nflarrest.com/api/v1/team")
+    this.teams = response_team.data
+    this.teams.forEach(element => {
+      teams.push(element)
+    });
     let players = []
-    let response_player = await this.$http.get("http://nflarrest.com/api/v1/player").then((response_player) => {
-      this.players = response_player.data
-      this.players.forEach(element => {
-        players.push(element)
-      });
-    })
+    let response_player = await this.$http.get("http://nflarrest.com/api/v1/player")
+    this.players = response_player.data
+    this.players.forEach(element => {
+      players.push(element)
+    });
     let positions = []
-    let response_position = await this.$http.get("http://nflarrest.com/api/v1/position").then((response_position) => {
-      this.positions = response_position.data
-      this.positions.forEach(element => {
-        positions.push(element)
-      });
-    })
+    let response_position = await this.$http.get("http://nflarrest.com/api/v1/position")
+    this.positions = response_position.data
+    this.positions.forEach(element => {
+      positions.push(element)
+    });
   },
   components: {
     apexchart: VueApexCharts,
