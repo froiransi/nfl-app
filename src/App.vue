@@ -8,31 +8,30 @@
       <div class="container py-2">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
-            <a class="nav-link rounded active" @click="changeTab('crimes')"  href="#">Crimes</a>
+            <a :class="activeTab('crimes')" class="nav-link rounded" @click="changeTab('crimes')"  href="#">Top Crimes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" @click="changeTab('teams')" href="#">Teams</a>
+            <a :class="activeTab('teams')" class="nav-link rounded" @click="changeTab('teams')" href="#">Top Teams</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" @click="changeTab('players')" href="#">Players</a>
+            <a :class="activeTab('players')" class="nav-link rounded" @click="changeTab('players')" href="#">Top Players</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link rounded" @click="changeTab('positions')" href="#">Positions</a>
+            <a :class="activeTab('positions')" class="nav-link rounded" @click="changeTab('positions')" href="#">Top Positions</a>
           </li>
         </ul>
       </div>
-
       <div v-if="currentTab == 'crimes'">
-        <apexchart type=pie width="60%" :options="chartOptionsCrimes" :series="seriesCrimes" />
+        <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
-        <apexchart type=pie width="60%" :options="chartOptionsTeams" :series="seriesTeams" />
+        <apexchart class="chart_set" type=donut :options="chartOptionsTeams" :series="seriesTeams" />
       </div>
       <div v-if="currentTab == 'players'">
-        <apexchart type=pie width="60%" :options="chartOptionsPlayers" :series="seriesPositions" />
+        <apexchart class="chart_set" type=donut :options="chartOptionsPlayers" :series="seriesPlayers" />
       </div>
       <div v-if="currentTab == 'positions'">
-        <apexchart type=pie width="60%" :options="chartOptionsPositions" :series="seriesPositions" />
+        <apexchart class="chart_set" type=donut :options="chartOptionsPositions" :series="seriesPositions" />
       </div>
     </div>
   </div>
@@ -53,28 +52,47 @@ export default {
     changeTab(name){
       this.currentTab = name
     },
+    activeTab(tab){
+      if (tab == this.currentTab){
+        return 'active'
+      } else {
+        return ''
+      }
+    },
     async calculateCrimes(){
       let internalLabelsCrimes = []
       let internalSeriesCrimes = []
+      let aux_crime = 0
       let responseCrime = await this.$http.get("http://nflarrest.com/api/v1/crime")
       this.crimes = responseCrime.data
-      console.log(this.crimes)
       this.crimes.forEach(element => {
-        internalLabelsCrimes.push(element.Category)
-        internalSeriesCrimes.push(parseInt(element.arrest_count))
+        if (parseInt(element.arrest_count)<7){
+          aux_crime++
+        } else {
+          internalLabelsCrimes.push(element.Category)
+          internalSeriesCrimes.push(parseInt(element.arrest_count))
+        }
       });
-
+      internalLabelsCrimes.push("Other")
+      internalSeriesCrimes.push(aux_crime)
       let internalChartOptionsCrimes = {
           labels: internalLabelsCrimes,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: 'bottom'
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    horizontal: false
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                }
               }
             }
-          }]
+          ]
         }
         this.chartOptionsCrimes= internalChartOptionsCrimes
         this.seriesCrimes=internalSeriesCrimes
@@ -84,7 +102,6 @@ export default {
       let internalSeriesTeams = []
       let responseTeam = await this.$http.get("http://nflarrest.com/api/v1/team")
       this.teams = responseTeam.data
-      console.log(this.teams)
       this.teams.forEach(element => {
         internalLabelsTeams.push(element.Team)
         internalSeriesTeams.push(parseInt(element.arrest_count))
@@ -93,14 +110,21 @@ export default {
       let internalChartOptionsTeams = {
           labels: internalLabelsTeams,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: 'bottom'
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    horizontal: false
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                }
               }
             }
-          }]
+          ]
         }
         this.chartOptionsTeams= internalChartOptionsTeams
         this.seriesTeams=internalSeriesTeams
@@ -108,35 +132,46 @@ export default {
     async calculatePlayers(){
       let internalLabelsPlayers = []
       let internalSeriesPlayers = []
+      let aux_player = 0
       let responsePlayer = await this.$http.get("http://nflarrest.com/api/v1/player")
       this.players = responsePlayer.data
-      console.log(this.players)
       this.players.forEach(element => {
-        internalLabelsPlayers.push(element.Name)
-        internalSeriesPlayers.push(parseInt(element.arrest_count))
+        if(element.arrest_count < 3){
+          aux_player++
+        } else {
+          internalLabelsPlayers.push(element.Name)
+          internalSeriesPlayers.push(parseInt(element.arrest_count))
+        }
       });
-
+      internalLabelsPlayers.push("Other")
+      internalSeriesPlayers.push(aux_player)
       let internalChartOptionsPlayers = {
           labels: internalLabelsPlayers,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: 'bottom'
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    horizontal: false
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                }
               }
             }
-          }]
+          ]
         }
-        this.chartOptionsPlayers= internalChartOptionsPlayers
-        this.seriesPlayers=internalSeriesPlayers
+      this.chartOptionsPlayers= internalChartOptionsPlayers
+      this.seriesPlayers=internalSeriesPlayers
     },
     async calculatePositions(){
       let internalLabelsPositions = []
       let internalSeriesPositions = []
       let responsePosition = await this.$http.get("http://nflarrest.com/api/v1/position")
       this.positions = responsePosition.data
-      console.log(this.positions)
       this.positions.forEach(element => {
         internalLabelsPositions.push(element.Position)
         internalSeriesPositions.push(parseInt(element.arrest_count))
@@ -145,14 +180,21 @@ export default {
       let internalChartOptionsPositions = {
           labels: internalLabelsPositions,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: 'bottom'
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    horizontal: false
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                }
               }
             }
-          }]
+          ]
         }
         this.chartOptionsPositions= internalChartOptionsPositions
         this.seriesPositions=internalSeriesPositions
@@ -238,6 +280,14 @@ font-family: 'Sunflower', sans-serif;
   color: white!important;
 }
 
+.apexcharts-canvas{
+  right: -150px !important;
+}
+
+.chart_set{
+  width: 60% !important;
+}
+
 @media (max-width: 454px) {
 
   .header_nfl{
@@ -252,6 +302,10 @@ font-family: 'Sunflower', sans-serif;
 
   .banner_title{
     font-size: 3rem;
+  }
+
+  .chart_set{
+    width: 100% !important;
   }
 
 }
