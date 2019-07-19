@@ -70,7 +70,7 @@
                 </ol>
               </div>
             </div>
-          </div>0
+          </div>
         </div>
       </div>
       <div v-if="currentTab == 'crimes'">
