@@ -8,6 +8,9 @@
       <div class="container py-2">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
+            <a :class="activeTab('home')" class="nav-link rounded" @click="changeTab('home')"  href="#">Home</a>
+          </li>
+          <li class="nav-item">
             <a :class="activeTab('crimes')" class="nav-link rounded" @click="changeTab('crimes')"  href="#">Top Crimes</a>
           </li>
           <li class="nav-item">
@@ -21,16 +24,69 @@
           </li>
         </ul>
       </div>
+      <div v-if="currentTab == 'home'" class="container">
+        <p class="px-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+        <div class="row">
+          <div class="col-md-3 col-12">
+            <div class="card mb-3">
+              <img src="../src/assets/img1.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Top 5 Crimes</h5>
+                <ol>
+                  <li v-for="crime in crimes.slice(1,6)" v-bind:key="crime.id">{{crime.Category}}</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-12">
+            <div class="card mb-3">
+              <img src="../src/assets/img2.jpeg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Top 5 Teams</h5>
+                <ol>
+                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id">{{team.Team_preffered_name}}</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-12">
+            <div class="card mb-3">
+              <img src="../src/assets/img3.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Top 5 Players</h5>
+                <ol>
+                  <li v-for="player in players.slice(1,6)" v-bind:key="player.id">{{player.Name}}</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-12">
+            <div class="card mb-3">
+              <img src="../src/assets/img4.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Top 5 Positions</h5>
+                <ol>
+                  <li v-for="position in positions.slice(1,6)" v-bind:key="position.id">{{position.Position}}</li>
+                </ol>
+              </div>
+            </div>
+          </div>0
+        </div>
+      </div>
       <div v-if="currentTab == 'crimes'">
+        <p class="px-4">Most popular crimes in the NFL.</p>
         <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
+        <p class="px-4">Teams that have had the most arrests in the NFL.</p>
         <apexchart class="chart_set" type=donut :options="chartOptionsTeams" :series="seriesTeams" />
       </div>
       <div v-if="currentTab == 'players'">
+        <p class="px-4">Players that have had the most arrests in the NFL.</p>
         <apexchart class="chart_set" type=donut :options="chartOptionsPlayers" :series="seriesPlayers" />
       </div>
       <div v-if="currentTab == 'positions'">
+        <p class="px-4">Positions that have had the most arrests in the NFL.</p>
         <apexchart class="chart_set" type=donut :options="chartOptionsPositions" :series="seriesPositions" />
       </div>
     </div>
@@ -78,18 +134,29 @@ export default {
       let internalChartOptionsCrimes = {
           labels: internalLabelsCrimes,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          chart: {
+            width: 600,
+            height: 500
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false
+            }
+          },
+          legend: {
+            position: "bottom"
+          },
           responsive: [
             {
               breakpoint: 1000,
               options: {
-                plotOptions: {
-                  bar: {
-                    horizontal: false
-                  }
+                dataLabels: {
+                  enabled: false
                 },
-                legend: {
-                  position: "bottom"
-                }
+                chart: {
+                  width: 350,
+                  height: 400
+                },
               }
             }
           ]
@@ -110,18 +177,29 @@ export default {
       let internalChartOptionsTeams = {
           labels: internalLabelsTeams,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          chart: {
+            width: 600,
+            height: 500
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false
+            }
+          },
+          legend: {
+            position: "bottom"
+          },
           responsive: [
             {
               breakpoint: 1000,
               options: {
-                plotOptions: {
-                  bar: {
-                    horizontal: false
-                  }
+                dataLabels: {
+                  enabled: false
                 },
-                legend: {
-                  position: "bottom"
-                }
+                chart: {
+                  width: 350,
+                  height: 400,
+                },
               }
             }
           ]
@@ -148,18 +226,29 @@ export default {
       let internalChartOptionsPlayers = {
           labels: internalLabelsPlayers,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          chart: {
+            width: 600,
+            height: 500
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false
+            }
+          },
+          legend: {
+            position: "bottom"
+          },
           responsive: [
             {
               breakpoint: 1000,
               options: {
-                plotOptions: {
-                  bar: {
-                    horizontal: false
-                  }
+                dataLabels: {
+                  enabled: false
                 },
-                legend: {
-                  position: "bottom"
-                }
+                chart: {
+                  width: 350,
+                  height: 500
+                },
               }
             }
           ]
@@ -180,18 +269,29 @@ export default {
       let internalChartOptionsPositions = {
           labels: internalLabelsPositions,
           colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
+          chart: {
+            width: 600,
+            height: 500
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false
+            }
+          },
+          legend: {
+            position: "bottom"
+          },
           responsive: [
             {
               breakpoint: 1000,
               options: {
-                plotOptions: {
-                  bar: {
-                    horizontal: false
-                  }
+                dataLabels: {
+                  enabled: false
                 },
-                legend: {
-                  position: "bottom"
-                }
+                chart: {
+                  width: 350,
+                  height: 400
+                },
               }
             }
           ]
@@ -211,7 +311,7 @@ export default {
   },
   data(){
     return{
-      currentTab: "crimes",
+      currentTab: "home",
       chartOptionsCrimes: {},
       seriesCrimes: [],
       chartOptionsTeams: {},
@@ -267,6 +367,7 @@ font-family: 'Sunflower', sans-serif;
   color: white;
   background-color: #070042;
   margin-right: 2px !important;
+  margin-bottom: 2px !important;
 }
 
 .nav-link:hover{
@@ -281,11 +382,36 @@ font-family: 'Sunflower', sans-serif;
 }
 
 .apexcharts-canvas{
-  right: -150px !important;
+  right: -15rem !important;
 }
 
 .chart_set{
-  width: 60% !important;
+  width: 50% !important;
+}
+
+.btn{
+  background-color: #4E0110;
+  border: none;
+}
+
+.btn:hover{
+  background-color: #B5000C;
+}
+@media (max-width: 992px) {
+
+  .apexcharts-canvas{
+    right: -10rem !important;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .apexcharts-canvas{
+    right: -6.5rem !important;
+  }
+
 }
 
 @media (max-width: 454px) {
@@ -304,8 +430,8 @@ font-family: 'Sunflower', sans-serif;
     font-size: 3rem;
   }
 
-  .chart_set{
-    width: 100% !important;
+  .apexcharts-canvas{
+    right: -2rem !important;
   }
 
 }
