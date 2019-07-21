@@ -33,7 +33,7 @@
               <div class="card-body">
                 <h5 class="card-title">Top 5 Crimes</h5>
                 <ol>
-                  <li v-for="crime in crimes.slice(1,6)" v-bind:key="crime.id">{{crime.Category}}</li>
+                  <li v-for="crime in crimes.slice(1,6)" v-bind:key="crime.id"><a @click="crimeByCategory(crime.Category)">{{crime.Category}}</a></li>
                 </ol>
               </div>
             </div>
@@ -74,7 +74,7 @@
         </div>
       </div>
       <div v-if="currentTab == 'crimes'">
-        <p class="px-4">Most popular crimes in the NFL.</p>
+        <p class="px-3 pt-3">Most popular crimes in the NFL.</p>
         <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
@@ -114,6 +114,9 @@ export default {
       } else {
         return ''
       }
+    },
+    crimeByCategory(category){
+      console.log(category)
     },
     async calculateCrimes(){
       let internalLabelsCrimes = []
@@ -170,7 +173,7 @@ export default {
       let responseTeam = await this.$http.get("http://nflarrest.com/api/v1/team")
       this.teams = responseTeam.data
       this.teams.forEach(element => {
-        internalLabelsTeams.push(element.Team)
+        internalLabelsTeams.push(element.Team_preffered_name)
         internalSeriesTeams.push(parseInt(element.arrest_count))
       });
 
@@ -311,7 +314,12 @@ export default {
   },
   data(){
     return{
+      crimes: [],
+      teams: [],
+      players: [],
+      positions: [],
       currentTab: "home",
+      currentDropdown: "",
       chartOptionsCrimes: {},
       seriesCrimes: [],
       chartOptionsTeams: {},
@@ -397,6 +405,7 @@ font-family: 'Sunflower', sans-serif;
 .btn:hover{
   background-color: #B5000C;
 }
+
 @media (max-width: 992px) {
 
   .apexcharts-canvas{
@@ -427,12 +436,17 @@ font-family: 'Sunflower', sans-serif;
   }
 
   .banner_title{
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .apexcharts-canvas{
     right: -2rem !important;
   }
+
+  .dropdown-toggle, .dropdown-menu{
+    margin-left: 1rem !important;
+  }
+
 
 }
 
