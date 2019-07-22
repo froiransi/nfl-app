@@ -160,7 +160,7 @@ export default {
       let internalLabelsCrimes = []
       let internalSeriesCrimes = []
       let aux_crime = 0
-      let responseCrime = await this.$http.get("http://nflarrest.com/api/v1/crime")
+      let responseCrime = await this.$http.get("https://nflarrest.com/api/v1/crime")
       this.crimes = responseCrime.data
       this.crimes.forEach(element => {
         if (parseInt(element.arrest_count)<20){
@@ -207,7 +207,7 @@ export default {
     },
     async calculateTeams(){
       let internalTeams = []
-      let responseTeam = await this.$http.get("http://nflarrest.com/api/v1/team")
+      let responseTeam = await this.$http.get("https://nflarrest.com/api/v1/team")
       this.teams = responseTeam.data
       this.teams.forEach(element => {
         internalTeams.push(element)
@@ -216,7 +216,7 @@ export default {
     },
     async calculatePlayers(){
       let internalPlayer = []
-      let responsePlayer = await this.$http.get("http://nflarrest.com/api/v1/player")
+      let responsePlayer = await this.$http.get("https://nflarrest.com/api/v1/player")
       this.players = responsePlayer.data
       this.players.forEach(element => {
           internalPlayer.push(element)
@@ -226,7 +226,7 @@ export default {
     async calculatePositions(){
       let internalLabelsPositions = []
       let internalSeriesPositions = []
-      let responsePosition = await this.$http.get("http://nflarrest.com/api/v1/position")
+      let responsePosition = await this.$http.get("https://nflarrest.com/api/v1/position")
       this.positions = responsePosition.data
       this.positions.forEach(element => {
         internalLabelsPositions.push(element.Position)

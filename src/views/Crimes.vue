@@ -98,7 +98,7 @@ export default {
     async calculateCrimesByPlayer(crimeId) {
       this.currentCrime = crimeId;
       let internalCrimesByPlayer = []
-      let responseCrimePlayer = await this.$http.get(`http://nflarrest.com/api/v1/crime/topPlayers/${crimeId}`)
+      let responseCrimePlayer = await this.$http.get(`https://nflarrest.com/api/v1/crime/topPlayers/${crimeId}`)
       this.crimesByPlayer = responseCrimePlayer.data
       this.crimesByPlayer.forEach(element => {
         internalCrimesByPlayer.push(element)
@@ -108,7 +108,7 @@ export default {
     async calculateCrimesByTeam(crimeId) {
       this.currentCrime = crimeId;
       let internalCrimesByTeam = []
-      let responseCrimeTeam = await this.$http.get(`http://nflarrest.com/api/v1/crime/topTeams/${crimeId}`)
+      let responseCrimeTeam = await this.$http.get(`https://nflarrest.com/api/v1/crime/topTeams/${crimeId}`)
       this.crimesByTeam = responseCrimeTeam.data
       this.crimesByTeam.forEach(element => {
         internalCrimesByTeam.push(element)
@@ -118,7 +118,7 @@ export default {
     async calculateCrimesByPosition(crimeId) {
       this.currentCrime = crimeId;
       let internalCrimesByPosition = []
-      let responseCrimePosition = await this.$http.get(`http://nflarrest.com/api/v1/crime/topPositions/${crimeId}`)
+      let responseCrimePosition = await this.$http.get(`https://nflarrest.com/api/v1/crime/topPositions/${crimeId}`)
       this.crimesByPosition = responseCrimePosition.data
       this.crimesByPosition.forEach(element => {
         internalCrimesByPosition.push(element)
