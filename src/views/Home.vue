@@ -49,7 +49,7 @@
               <div class="card-body">
                 <h5 class="card-title">Top 5 Teams</h5>
                 <ol>
-                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id"><a :href="`/teams/${team.Team_preffered_name}`">{{team.Team_preffered_name}}</a></li>
+                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id"><a :href="`/teams/${team.Team}`">{{team.Team_preffered_name}}</a></li>
                 </ol>
               </div>
             </div>
@@ -79,20 +79,56 @@
         </div>
       </div>
       <div v-if="currentTab == 'crimes'">
-        <p class="px-3 pt-3">Most popular crimes in the NFL.</p>
+        <h4 class="px-3 pt-3">Most popular crimes in the NFL.</h4>
         <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
-        <p class="px-4">Teams that have had the most arrests in the NFL.</p>
-        <apexchart class="chart_set" type=donut :options="chartOptionsTeams" :series="seriesTeams" />
+        <h4 class="px-4">Teams that have had the most arrests in the NFL.</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Team Name</th>
+                <th scope="col">Team Division</th>
+                <th scope="col">Arrest count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(team, id) in teams" v-bind:key="team.id">
+                <th scope="row">{{id+1}}</th>
+                <td>{{team.Team_preffered_name}}</td>
+                <td>{{team.Team_Conference_Division}}</td>
+                <td>{{team.arrest_count}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div v-if="currentTab == 'players'">
-        <p class="px-4">Players that have had the most arrests in the NFL.</p>
-        <apexchart class="chart_set" type=donut :options="chartOptionsPlayers" :series="seriesPlayers" />
+        <h4 class="px-4">Players that have had the most arrests in the NFL.</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Player Name</th>
+                <th scope="col">Arrest count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(player, id) in players" v-bind:key="player.id">
+                <th scope="row">{{id+1}}</th>
+                <td>{{player.Name}}</td>
+                <td>{{player.arrest_count}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div v-if="currentTab == 'positions'">
-        <p class="px-4">Positions that have had the most arrests in the NFL.</p>
-        <apexchart class="chart_set" type=bar :options="chartOptionsPositions" :series="seriesPositions" />
+        <h4 class="px-4">Positions that have had the most arrests in the NFL.</h4>
+        <apexchart class="chart_set" type=bar :options="chartOptionsPositions" :series="seriesPositions"/>
       </div>
     </div>
   </div>
@@ -170,96 +206,22 @@ export default {
         this.seriesCrimes=internalSeriesCrimes
     },
     async calculateTeams(){
-      let internalLabelsTeams = []
-      let internalSeriesTeams = []
+      let internalTeams = []
       let responseTeam = await this.$http.get("http://nflarrest.com/api/v1/team")
       this.teams = responseTeam.data
       this.teams.forEach(element => {
-        internalLabelsTeams.push(element.Team_preffered_name)
-        internalSeriesTeams.push(parseInt(element.arrest_count))
+        internalTeams.push(element)
       });
-
-      let internalChartOptionsTeams = {
-          labels: internalLabelsTeams,
-          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          chart: {
-            width: 600,
-            height: 500
-          },
-          plotOptions: {
-            bar: {
-              horizontal: false
-            }
-          },
-          legend: {
-            position: "bottom"
-          },
-          responsive: [
-            {
-              breakpoint: 1000,
-              options: {
-                dataLabels: {
-                  enabled: false
-                },
-                chart: {
-                  width: 350,
-                  height: 600,
-                },
-              }
-            }
-          ]
-        }
-        this.chartOptionsTeams= internalChartOptionsTeams
-        this.seriesTeams=internalSeriesTeams
+      this.teams=internalTeams
     },
     async calculatePlayers(){
-      let internalLabelsPlayers = []
-      let internalSeriesPlayers = []
-      let aux_player = 0
+      let internalPlayer = []
       let responsePlayer = await this.$http.get("http://nflarrest.com/api/v1/player")
       this.players = responsePlayer.data
       this.players.forEach(element => {
-        if(element.arrest_count < 3){
-          aux_player++
-        } else {
-          internalLabelsPlayers.push(element.Name)
-          internalSeriesPlayers.push(parseInt(element.arrest_count))
-        }
+          internalPlayer.push(element)
       });
-      internalLabelsPlayers.push("Other")
-      internalSeriesPlayers.push(aux_player)
-      let internalChartOptionsPlayers = {
-          labels: internalLabelsPlayers,
-          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
-          chart: {
-            width: 600,
-            height: 500
-          },
-          plotOptions: {
-            bar: {
-              horizontal: false
-            }
-          },
-          legend: {
-            position: "bottom"
-          },
-          responsive: [
-            {
-              breakpoint: 1000,
-              options: {
-                dataLabels: {
-                  enabled: false
-                },
-                chart: {
-                  width: 350,
-                  height: 500
-                },
-              }
-            }
-          ]
-        }
-      this.chartOptionsPlayers= internalChartOptionsPlayers
-      this.seriesPlayers=internalSeriesPlayers
+      this.players=internalPlayer
     },
     async calculatePositions(){
       let internalLabelsPositions = []

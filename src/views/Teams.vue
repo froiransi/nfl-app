@@ -42,15 +42,8 @@ export default {
   },
   methods: {
     async setTeam(teamId){
-        let response = await this.$http.get("http://nflarrest.com/api/v1/team")
-        this.teams = response.data
-        this.teams.forEach(element => {
-            if (element.Team_preffered_name == teamId){
-                this.currentTeam = element
-            }
-        });
         let internalTeamsByCrime = []
-        let responseTeamByCrime = await this.$http.get(`http://nflarrest.com/api/v1/team/topCrimes/${this.currentTeam.Team}`)
+        let responseTeamByCrime = await this.$http.get(`http://nflarrest.com/api/v1/team/topCrimes/${teamId}`)
         this.teamsByCrime = responseTeamByCrime.data
         this.teamsByCrime.forEach(element => {
             internalTeamsByCrime.push(element)
