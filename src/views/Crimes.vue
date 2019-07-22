@@ -10,6 +10,7 @@
                 <li class="breadcrumb-item" aria-current="page">Statistics by Crime: {{currentCrime}}</li>
             </ol>
         </nav>
+      <div class="container py-2 px-2">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
             <a :class="activeTab('crimesByPlayer')" class="nav-link" @click="changeTab('crimesByPlayer')"  href="#">Top Players for Crime</a>
@@ -84,6 +85,7 @@
             </table>
           </div>
         </div>
+    </div>
     </div>
 </template>
 <script>

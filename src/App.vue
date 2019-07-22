@@ -81,6 +81,11 @@ font-family: 'Sunflower', sans-serif;
   background-color: transparent;
 }
 
+.chart_set_bar {
+  width: 60%;
+  margin-left: -5rem !important;
+}
+
 @media (max-width: 992px) {
 
   .apexcharts-canvas{
@@ -120,6 +125,11 @@ font-family: 'Sunflower', sans-serif;
 
   .dropdown-toggle, .dropdown-menu{
     margin-left: 1rem !important;
+  }
+
+  .chart_set_bar {
+    width: 50%;
+    margin-left: -2.5rem !important;
   }
 
 

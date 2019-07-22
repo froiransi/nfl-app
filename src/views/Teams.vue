@@ -10,7 +10,7 @@
                 <li class="breadcrumb-item" aria-current="page">Statistics by Team</li>
             </ol>
         </nav>
-        <div v-if="currentTab == 'crimesByPlayer'">
+        <div class="container py-2 px-2">
           <h4 class="px-3 pt-3">Crimes by: {{currentTeam.Team_preffered_name}}</h4>
           <div class="table-responsive">
             <table class="table table-hover">
@@ -49,28 +49,13 @@ export default {
             internalTeamsByCrime.push(element)
         });
         this.teamsByCrime = internalTeamsByCrime
-    },
-    changeTab(name){
-      this.currentTab = name
-    },
-    activeTab(tab){
-      if (tab == this.currentTab){
-        return 'active'
-      } else {
-        return ''
-      }
     }
   },
   components: {},
   data() {
     return {
       teamId: "",
-      currentCrime: "",
       currentTeam: "",
-      currentTab: "crimesByPlayer",
-      crimesByPlayer: [],
-      crimesByTeam: [],
-      crimesByPosition: [],
       teamsByCrime: []
     };
   }

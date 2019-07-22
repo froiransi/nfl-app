@@ -5,13 +5,7 @@
         <img class="icon_nfl" src="../../src/assets/nfl_icon.png">
         <span class="banner_title">NFL Reports</span>
       </header>
-      <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item font-weight-bold"><a href="/">Home</a></li>
-                <li class="breadcrumb-item" aria-current="page">Welcome to the NFL crimes report Website</li>
-            </ol>
-        </nav>
-      <div class="container py-2">
+      <div class="container py-2 px-2">
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item">
             <a :class="activeTab('home')" class="nav-link rounded" @click="changeTab('home')"  href="#">Home</a>
@@ -29,106 +23,106 @@
             <a :class="activeTab('positions')" class="nav-link rounded" @click="changeTab('positions')" href="#">Top Positions</a>
           </li>
         </ul>
-      </div>
-      <div v-if="currentTab == 'home'" class="container">
-        <div class="row">
-          <div class="col-md-3 col-12">
-            <div class="card mb-3">
-              <img src="../../src/assets/img1.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Top 5 Crimes</h5>
-                <ol>
-                  <li v-for="crime in crimes.slice(1,6)" v-bind:key="crime.id"><a :href="`/crimes/${crime.Category}`">{{crime.Category}}</a></li>
-                </ol>
+        <div v-if="currentTab == 'home'" class="container">
+          <div class="row">
+            <div class="col-md-3 col-12">
+              <div class="card mb-3">
+                <img src="../../src/assets/img1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Top 5 Crimes</h5>
+                  <ol>
+                    <li v-for="crime in crimes.slice(1,6)" v-bind:key="crime.id"><a :href="`/crimes/${crime.Category}`">{{crime.Category}}</a></li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="card mb-3">
-              <img src="../../src/assets/img2.jpeg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Top 5 Teams</h5>
-                <ol>
-                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id"><a :href="`/teams/${team.Team}`">{{team.Team_preffered_name}}</a></li>
-                </ol>
+            <div class="col-md-3 col-12">
+              <div class="card mb-3">
+                <img src="../../src/assets/img2.jpeg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Top 5 Teams</h5>
+                  <ol>
+                    <li v-for="team in teams.slice(1,6)" v-bind:key="team.id"><a :href="`/teams/${team.Team}`">{{team.Team_preffered_name}}</a></li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="card mb-3">
-              <img src="../../src/assets/img3.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Top 5 Players</h5>
-                <ol>
-                  <li v-for="player in players.slice(1,6)" v-bind:key="player.id">{{player.Name}}</li>
-                </ol>
+            <div class="col-md-3 col-12">
+              <div class="card mb-3">
+                <img src="../../src/assets/img3.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Top 5 Players</h5>
+                  <ol>
+                    <li v-for="player in players.slice(1,6)" v-bind:key="player.id">{{player.Name}}</li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="card mb-3">
-              <img src="../../src/assets/img4.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Top 5 Positions</h5>
-                <ol>
-                  <li v-for="position in positions.slice(1,6)" v-bind:key="position.id">{{position.Position}}</li>
-                </ol>
+            <div class="col-md-3 col-12">
+              <div class="card mb-3">
+                <img src="../../src/assets/img4.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Top 5 Positions</h5>
+                  <ol>
+                    <li v-for="position in positions.slice(1,6)" v-bind:key="position.id">{{position.Position}}</li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div v-if="currentTab == 'crimes'">
-        <h4 class="px-3 pt-3">Most popular crimes in the NFL.</h4>
-        <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
-      </div>
-      <div v-if="currentTab == 'teams'">
-        <h4 class="px-4 pt-3">Teams that have had the most arrests in the NFL.</h4>
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Team Name</th>
-                <th scope="col">Team Division</th>
-                <th scope="col">Arrest count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(team, id) in teams" v-bind:key="team.id">
-                <th scope="row">{{id+1}}</th>
-                <td>{{team.Team_preffered_name}}</td>
-                <td>{{team.Team_Conference_Division}}</td>
-                <td>{{team.arrest_count}}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div v-if="currentTab == 'crimes'">
+          <h4 class="px-3 pt-3">Most popular crimes in the NFL.</h4>
+          <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
         </div>
-      </div>
-      <div v-if="currentTab == 'players'">
-        <h4 class="px-4 pt-3">Players that have had the most arrests in the NFL.</h4>
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Player Name</th>
-                <th scope="col">Arrest count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(player, id) in players" v-bind:key="player.id">
-                <th scope="row">{{id+1}}</th>
-                <td>{{player.Name}}</td>
-                <td>{{player.arrest_count}}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div v-if="currentTab == 'teams'">
+          <h4 class="px-4 pt-3">Teams that have had the most arrests in the NFL.</h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Team Name</th>
+                  <th scope="col">Team Division</th>
+                  <th scope="col">Arrest count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(team, id) in teams" v-bind:key="team.id">
+                  <th scope="row">{{id+1}}</th>
+                  <td>{{team.Team_preffered_name}}</td>
+                  <td>{{team.Team_Conference_Division}}</td>
+                  <td>{{team.arrest_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div v-if="currentTab == 'positions'">
-        <h4 class="px-4 pt-3">Positions that have had the most arrests in the NFL.</h4>
-        <apexchart class="chart_set" type=bar :options="chartOptionsPositions" :series="seriesPositions"/>
+        <div v-if="currentTab == 'players'">
+          <h4 class="px-4 pt-3">Players that have had the most arrests in the NFL.</h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Player Name</th>
+                  <th scope="col">Arrest count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(player, id) in players" v-bind:key="player.id">
+                  <th scope="row">{{id+1}}</th>
+                  <td>{{player.Name}}</td>
+                  <td>{{player.arrest_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div v-if="currentTab == 'positions'">
+          <h4 class="px-4 pt-3">Positions that have had the most arrests in the NFL.</h4>
+          <apexchart class="chart_set_bar" type=bar :options="chartOptionsPositions" :series="seriesPositions"/>
+        </div>
       </div>
     </div>
   </div>
@@ -235,7 +229,8 @@ export default {
 
       let internalChartOptionsPositions = {
           chart: {
-              height: 500,
+              height: 600,
+              width: 550,
               type: 'bar',
           },
           colors: ['#070042'],
@@ -245,17 +240,27 @@ export default {
               }
           },
           dataLabels: {
-              enabled: false
+              enabled: true
           },
-          series: [{
-              data: internalSeriesPositions
-          }],
           xaxis: {
               categories: internalLabelsPositions,
-          }
+          },
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                chart: {
+                  width: 300,
+                  height: 400
+                },
+              }
+            }
+          ]
       }
       this.chartOptionsPositions= internalChartOptionsPositions
-      this.seriesPositions = internalSeriesPositions
+      this.seriesPositions = [{
+              data: internalSeriesPositions,
+          }]
     }
   },
   async created(){
