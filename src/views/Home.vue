@@ -83,7 +83,7 @@
         <apexchart class="chart_set" type=donut :options="chartOptionsCrimes" :series="seriesCrimes" />
       </div>
       <div v-if="currentTab == 'teams'">
-        <h4 class="px-4">Teams that have had the most arrests in the NFL.</h4>
+        <h4 class="px-4 pt-3">Teams that have had the most arrests in the NFL.</h4>
         <div class="table-responsive">
           <table class="table table-hover">
             <thead>
@@ -106,7 +106,7 @@
         </div>
       </div>
       <div v-if="currentTab == 'players'">
-        <h4 class="px-4">Players that have had the most arrests in the NFL.</h4>
+        <h4 class="px-4 pt-3">Players that have had the most arrests in the NFL.</h4>
         <div class="table-responsive">
           <table class="table table-hover">
             <thead>
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div v-if="currentTab == 'positions'">
-        <h4 class="px-4">Positions that have had the most arrests in the NFL.</h4>
+        <h4 class="px-4 pt-3">Positions that have had the most arrests in the NFL.</h4>
         <apexchart class="chart_set" type=bar :options="chartOptionsPositions" :series="seriesPositions"/>
       </div>
     </div>
