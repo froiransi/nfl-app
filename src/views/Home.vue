@@ -49,7 +49,7 @@
               <div class="card-body">
                 <h5 class="card-title">Top 5 Teams</h5>
                 <ol>
-                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id">{{team.Team_preffered_name}}</li>
+                  <li v-for="team in teams.slice(1,6)" v-bind:key="team.id"><a :href="`/teams/${team.Team_preffered_name}`">{{team.Team_preffered_name}}</a></li>
                 </ol>
               </div>
             </div>
@@ -92,7 +92,7 @@
       </div>
       <div v-if="currentTab == 'positions'">
         <p class="px-4">Positions that have had the most arrests in the NFL.</p>
-        <apexchart class="chart_set" type=donut :options="chartOptionsPositions" :series="seriesPositions" />
+        <apexchart class="chart_set" type=bar :options="chartOptionsPositions" :series="seriesPositions" />
       </div>
     </div>
   </div>
@@ -127,7 +127,7 @@ export default {
       let responseCrime = await this.$http.get("http://nflarrest.com/api/v1/crime")
       this.crimes = responseCrime.data
       this.crimes.forEach(element => {
-        if (parseInt(element.arrest_count)<7){
+        if (parseInt(element.arrest_count)<20){
           aux_crime++
         } else {
           internalLabelsCrimes.push(element.Category)
@@ -272,37 +272,28 @@ export default {
       });
 
       let internalChartOptionsPositions = {
-          labels: internalLabelsPositions,
-          colors: ['#12355B','#070042','#4E0110','#B5000C','#7D90A5','#424242','#D6737A','#020012','#777397','#050F19'],
           chart: {
-            width: 600,
-            height: 500
+              height: 500,
+              type: 'bar',
           },
+          colors: ['#070042'],
           plotOptions: {
-            bar: {
-              horizontal: false
-            }
-          },
-          legend: {
-            position: "bottom"
-          },
-          responsive: [
-            {
-              breakpoint: 1000,
-              options: {
-                dataLabels: {
-                  enabled: false
-                },
-                chart: {
-                  width: 350,
-                  height: 400
-                },
+              bar: {
+                  horizontal: true,
               }
-            }
-          ]
-        }
-        this.chartOptionsPositions= internalChartOptionsPositions
-        this.seriesPositions=internalSeriesPositions
+          },
+          dataLabels: {
+              enabled: false
+          },
+          series: [{
+              data: internalSeriesPositions
+          }],
+          xaxis: {
+              categories: internalLabelsPositions,
+          }
+      }
+      this.chartOptionsPositions= internalChartOptionsPositions
+      this.seriesPositions = internalSeriesPositions
     }
   },
   async created(){
@@ -337,119 +328,4 @@ export default {
 </script>
 
 <style>
-
-#app {
-font-family: 'Sunflower', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #070042;
-}
-
-.main{
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-.icon_nfl{
-  max-height: 7rem;
-  padding-top: 1rem;
-}
-
-.banner_title{
-  vertical-align: bottom;
-  font-size: 4rem;
-  color: white;
-}
-
-.header_nfl{
-  background-image: url(../../src/assets/banner.png);
-  border: none;
-  height: 8rem;
-  border-radius: 0px 0px 15px 15px;
-  -moz-border-radius: 0px 0px 15px 15px;
-  -webkit-border-radius: 0px 0px 15px 15px;
-  -webkit-background-size: 100% 100%; /* Safari 3.0 */
-  -moz-background-size: 100% 100%; /* Gecko 1.9.2 (Firefox 3.6) */
-  -o-background-size: 100% 100%; /* Opera 9.5 */
-  background-size: 100% 100%;
-}
-
-.nav-link{
-  color: white;
-  background-color: #070042;
-  margin-right: 2px !important;
-  margin-bottom: 2px !important;
-}
-
-.nav-link:hover{
-  color: #070042 !important;
-  background-color: #F2F2F2 !important;
-}
-
-.active, .active:hover{
-  font-weight: 700;
-  background-color: #B5000C !important;
-  color: white!important;
-}
-
-.apexcharts-canvas{
-  right: -15rem !important;
-}
-
-.chart_set{
-  width: 50% !important;
-}
-
-.btn{
-  background-color: #4E0110;
-  border: none;
-}
-
-.btn:hover{
-  background-color: #B5000C;
-}
-
-@media (max-width: 992px) {
-
-  .apexcharts-canvas{
-    right: -10rem !important;
-  }
-
-}
-
-
-@media (max-width: 768px) {
-
-  .apexcharts-canvas{
-    right: -6.5rem !important;
-  }
-
-}
-
-@media (max-width: 454px) {
-
-  .header_nfl{
-    background-image: url(../../src/assets/banner_mobile.png);
-    height: 6rem;
-  }
-
-  .icon_nfl{
-    max-height: 5rem;
-    padding-top: 0.5rem;
-  }
-
-  .banner_title{
-    font-size: 2.5rem;
-  }
-
-  .apexcharts-canvas{
-    right: -2rem !important;
-  }
-
-  .dropdown-toggle, .dropdown-menu{
-    margin-left: 1rem !important;
-  }
-
-
-}
 </style>

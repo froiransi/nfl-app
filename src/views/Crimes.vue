@@ -7,7 +7,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item font-weight-bold"><a href="/">Home</a></li>
-                <li class="breadcrumb-item" aria-current="page">Statistic by crime: {{currentCrime}}</li>
+                <li class="breadcrumb-item" aria-current="page">Statistics by Crime: {{currentCrime}}</li>
             </ol>
         </nav>
         <ul class="nav nav-pills nav-fill">
@@ -22,22 +22,67 @@
           </li>
         </ul>
         <div v-if="currentTab == 'crimesByPlayer'">
-          <p class="px-3 pt-3">Top Players by crime: </p>
-          <ol>
-            <li v-for="crime in crimesByPlayer" v-bind:key="crime.id">{{crime.Name}}: {{crime.arrest_count}}</li>
-          </ol>
+          <h4 class="px-3 pt-3">Players by crime: </h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Player Name</th>
+                  <th scope="col">Arrest count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(crime, id) in crimesByPlayer" v-bind:key="crime.id">
+                  <th scope="row">{{id+1}}</th>
+                  <td>{{crime.Name}}</td>
+                  <td>{{crime.arrest_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div v-if="currentTab == 'crimesByTeam'">
-          <p class="px-3 pt-3">Top Teams by crime: </p>
-          <ol>
-            <li v-for="crime in crimesByTeam" v-bind:key="crime.id">{{crime.Team_city}} {{crime.Team_name}}: {{crime.arrest_count}}</li>
-          </ol>
+          <h4 class="px-3 pt-3">Teams by crime: </h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Team Name</th>
+                  <th scope="col">Arrest count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(crime, id) in crimesByTeam" v-bind:key="crime.id">
+                  <th scope="row">{{id+1}}</th>
+                  <td>{{crime.Team_city}} {{crime.Team_name}}</td>
+                  <td>{{crime.arrest_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div v-if="currentTab == 'crimesByPosition'">
-          <p class="px-3 pt-3">Top Positions by crime: </p>
-          <ol>
-            <li v-for="crime in crimesByPosition" v-bind:key="crime.id">{{crime.Position}}: {{crime.arrest_count}}</li>
-          </ol>
+          <h4 class="px-3 pt-3">Positions by crime: </h4>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Arrest count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(crime, id) in crimesByPosition" v-bind:key="crime.id">
+                  <th scope="row">{{id+1}}</th>
+                  <td>{{crime.Position}}</td>
+                  <td>{{crime.arrest_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
 </template>
@@ -104,9 +149,6 @@ export default {
 };
 </script>
 <style>
-.breadcrumb{
-  background-color: transparent;
-}
 </style>
 
 
